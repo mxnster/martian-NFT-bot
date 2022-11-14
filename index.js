@@ -34,9 +34,9 @@ async function sendTransaction(sender, payload, nonce) {
     }
 }
 
-async function sendAptos(from, to, amount, description = '') {
+async function sendAptos(from, to, amount) {
     amount = amount.toFixed(7);
-    console.log(`Sending ${amount} APT to ${to.address()} ${description}`);
+    console.log(`Sending ${amount} APT to ${to.address()}`);
 
     return await sendTransaction(from, {
         type: "entry_function_payload",
@@ -46,7 +46,7 @@ async function sendAptos(from, to, amount, description = '') {
     })
 }
 
-async function approveNFT(sender, label, nonce) {
+async function approveNFT(sender, label) {
     console.log(`Approving ${label}`);
 
     return await sendTransaction(sender, {
@@ -60,10 +60,10 @@ async function approveNFT(sender, label, nonce) {
             "9007199254740991",
             [false, false, false]
         ],
-    }, nonce)
+    }, generator.next().value)
 }
 
-async function mintNFT(sender, label, name, nonce) {
+async function mintNFT(sender, label, name) {
     console.log(`Minting ${name}`);
 
     return await sendTransaction(sender, {
@@ -85,7 +85,7 @@ async function mintNFT(sender, label, name, nonce) {
             [],
             []
         ]
-    }, nonce)
+    }, generator.next().value)
 }
 
 async function nftCreationHandler(sender) {
@@ -93,8 +93,8 @@ async function nftCreationHandler(sender) {
     let label = "Martian Testnet" + number;
     let name = "Martian NFT #" + number;
 
-    await approveNFT(sender, label, generator.next().value)
-    await mintNFT(sender, label, name, generator.next().value)
+    await approveNFT(sender, label)
+    await mintNFT(sender, label, name)
 }
 
 async function checkBalance(account) {
